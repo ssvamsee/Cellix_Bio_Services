@@ -18,6 +18,6 @@ app.get('/Contact', (req,res) => {
 });
 
 app.listen(3001, (req,res) => {
-    console.log('server is running at 3001');
+    console.log('hey server is running at 3001');
     console.log('http://localhost:3001')
 });
