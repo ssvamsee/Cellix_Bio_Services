@@ -11,21 +11,21 @@ router.get('/', (req, res) =>{
 
 router.get('/patents', (req,res) => {
     patents.find({}, (err,result) => {
-        console.log(result);
+        // console.log(result);
         if(err){
             res.status(500).send(err);
         }else{
-            res.status(200).send({data: result});
+            res.status(200).send(result);
         }
     })
-})
+});
 
 router.get('/contact', (req,res) => {
     user.find({}, (err,result) => {
         if(err){
             res.status(500).send(err);
         }else{
-            res.status(200).json({data: result});
+            res.status(200).json(result);
         }
     })
 });
