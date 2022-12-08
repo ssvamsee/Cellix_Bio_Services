@@ -1,23 +1,18 @@
 const express = require('express');
+// const dotenv = require('dotenv');
 const app = express();
+require('./db/Conn')
+// const Patents = require('./models/userSchema');
+app.use(express.json());
+app.use(require('./Router/auth'));
+const User = require('./models/userSchema');
 
-app.get('/', (req, res) =>{
-    res.send(`Hello World from the Server`)
-});
+const middleware = (req,res,next) => {
+    console.log(`Hello Middleware`);
+    next();
+}
 
-app.get('/Patents', (req,res) => {
-    res.send(`Hello World from Patents`)
-});
-
-app.get('/PatentInfo', (req,res) => {
-    res.send(`Hello World from Patents Info`)
-});
-
-app.get('/Contact', (req,res) => {
-    res.send(`Hello World from Contact`)
-});
-
-app.listen(3001, (req,res) => {
-    console.log('hey server is running at 3001');
-    console.log('http://localhost:3001')
-});
+app.listen(3003, () => {
+    console.log(`Server is running at 3003`);
+    console.log(`http://localhost:3003`);
+}) 
