@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 const patentSchema = new mongoose.Schema({
-    Claims: {
+    claims: {
         type: String 
     },
     Compounds: {
         type: String
     },
-    Diseases: {
+    diseases: {
         type: String 
     },
-    Formula: {
+    formula: {
         type: String 
     },
-    Wno: {
+    publication_date: {
+        type: String 
+    },
+    therapeutic_area: {
+        type: String 
+    },
+    wno: {
         type: String
     }
 })
