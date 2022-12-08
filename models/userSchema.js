@@ -1,26 +1,29 @@
 const mongoose = require('mongoose')
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+const userSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        phone: {
+            type: Number,
+            required: true
+        },
+        subject: {
+            type: String,
+            required: true
+        },
+        message: {
+            type: String,
+            required: true
+        },
     },
-    email: {
-        type: String,
-        required: true
-    },
-    phone: {
-        type: String,
-        required: true
-    },
-    subject: {
-        type: String,
-        required: true
-    },
-    message: {
-        type: Number,
-        required: true
-    }
-})
+    {timestamps: true},
+);
 
-const User = mongoose.model('USER', userSchema);
-module.exports = User;
+const user = mongoose.model('cellixbioqueries', userSchema);
+module.exports = user;

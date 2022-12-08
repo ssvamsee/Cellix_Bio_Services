@@ -1,11 +1,18 @@
 const express = require('express');
 // const dotenv = require('dotenv');
 const app = express();
+const cors = require('cors');
 require('./db/Conn')
-// const Patents = require('./models/userSchema');
+
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+}))
+
 app.use(express.json());
+
 app.use(require('./Router/auth'));
-const User = require('./models/userSchema');
+
 
 const middleware = (req,res,next) => {
     console.log(`Hello Middleware`);
