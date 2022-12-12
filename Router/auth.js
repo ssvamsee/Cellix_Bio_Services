@@ -9,17 +9,67 @@ router.get('/', (req, res) =>{
     res.send(`Hello World from the Server router js`)
 });
 
-router.get('/patents', (req,res) => {
-    patents.find({}, (err,result) => {
-        // console.log(result);
-        if(err){
-            res.status(500).send(err);
-        }else{
+// Search for all Patents
+router.get('/patents', async(req, res) => {
+    try {
+            patents.find({}, (err, result) => {
             res.status(200).send(result);
-        }
-    })
+        })
+    } catch(err){
+        res.status(500).send(err);
+    }
 });
 
+// Search for Wno
+router.get('/patents/wipo/:wno', (req, res) => {
+    const wno = req.params.wno;
+    patents.find({wno: wno})
+    .then((result) => {
+        res.status(200).send(result);
+    }).catch((err) => {
+        res.status(500).send(err);
+    });
+});
+
+// Search for Therapeutic Area
+router.get('/patents/therapeutic_area/:ta', (req, res) => {
+    const ta = req.params.ta;
+    patents.find({therapeutic_area: ta})
+    .then((result) => {
+        res.status(200).send(result);
+    }).catch((err) => {
+        res.status(500).send(err);
+    });
+});
+
+//Search for Year
+router.get('/patents/years/:year', (req, res) => {
+    const year = req.params.year;
+    patents.find({ year: year})
+    .then((result) => {
+        res.status(200).send(result);
+    }).catch((err) => {
+        res.status(500).send(err);
+    });
+});
+
+//Search for Both Wno and therapeutic area
+router.get('/patents/:search', (req, res) => {
+    const search = req.params.search;
+    patents.find(
+        {$or: [
+            {wno: {$regex: search}},
+            {therapeutic_area: {$regex: search}}
+        ]}
+    )
+    .then((result) => {
+        res.status(200).send(result);
+    }).catch((err) => {
+        res.status(500).send(err);
+    })
+})
+
+//Search for send us email
 router.get('/contact', (req,res) => {
     user.find({}, (err,result) => {
         if(err){
@@ -30,6 +80,7 @@ router.get('/contact', (req,res) => {
     })
 });
 
+//Posting data into db
 router.post('/contact', async (req, res) => {
     const { name, email, phone, subject, message } = req.body;
     if(!name || !email || !phone || !subject || !message){

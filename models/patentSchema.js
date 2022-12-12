@@ -18,6 +18,9 @@ const patentSchema = new mongoose.Schema({
     therapeutic_area: {
         type: String 
     },
+    year: {
+        type: String
+    },
     wno: {
         type: String
     }
