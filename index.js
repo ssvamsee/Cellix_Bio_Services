@@ -5,7 +5,7 @@ const cors = require('cors');
 require('./db/Conn')
 
 app.use(cors({
-    origin: ["http://localhost:3000", "https://ssvamsee.github.io/Cellix_Bio/"],
+    origin: ["http://localhost:3000", "https://ssvamsee.github.io/Cellix_Bio/", "http://13.233.51.172/"],
     methods: ["GET", "POST"],
 }))
 
