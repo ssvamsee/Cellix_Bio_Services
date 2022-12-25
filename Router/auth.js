@@ -4,6 +4,7 @@ const patents = require('../models/patentSchema');
 // require('../db/Conn');
 const User = require('../models/userSchema');
 const user = require('../models/userSchema');
+const uspatents = require('../models/USPatentsSchema');
 
 router.get('/', (req, res) =>{
     res.send(`Hello from the Cellix Bio Services`)
@@ -68,6 +69,18 @@ router.get('/patents/:search', (req, res) => {
         res.status(500).send(err);
     })
 })
+
+// Send Data for IP
+router.get('/uspatents', async(req, res) => {
+    try {
+            uspatents.find({}, (err, result) => {
+            res.status(200).send(result);
+        })
+    } catch(err){
+        res.status(500).send(err);
+    }
+});
+
 
 //Search for send us email
 router.get('/contact', (req,res) => {
