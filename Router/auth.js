@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const patents = require('../models/patentSchema');
-// require('../db/Conn');
 const User = require('../models/userSchema');
 const user = require('../models/userSchema');
 const uspatents = require('../models/USPatentsSchema');
+const cbuspatents = require('../models/CBUSPatentsSchema');
 
 router.get('/', (req, res) =>{
     res.send(`Hello from the Cellix Bio Services`)
@@ -70,15 +70,26 @@ router.get('/patents/:search', (req, res) => {
     })
 })
 
-// Send Data for IP
+// Send Data for Inventor
 router.get('/uspatents', async(req, res) => {
     try {
             uspatents.find({}, (err, result) => {
             res.status(200).send(result);
         })
     } catch(err){
-        res.status(500).send(err);
+             res.status(500).send(err);
     }
+});
+
+// Send Data for IP
+router.get('/cbuspatents', async(req, res) => {
+    try {
+        cbuspatents.find({}, (err, result) => {
+        res.status(200).send(result);
+    })
+} catch(err){
+    res.status(500).send(err);
+}
 });
 
 
