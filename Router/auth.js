@@ -5,7 +5,7 @@ const User = require('../models/userSchema');
 const user = require('../models/userSchema');
 const uspatents = require('../models/USPatentsSchema');
 const cbuspatents = require('../models/CBUSPatentsSchema');
-const AvacaPatents = require('../Models/AvacaPatentSchema');
+// const AvacaPatents = require('../Models/AvacaPatentSchema');
 
 router.get('/', (req, res) =>{
     res.send(`Hello from the Cellix Bio Services`)
@@ -93,16 +93,16 @@ router.get('/cbuspatents', async(req, res) => {
 }
 });
 
-//Search Patents from AvacaPharma
-router.get('/avacapatents', async (req, res) => {
-    try {
-            AvacaPatents.find({}, (err, result) => {
-            res.status(200).send(result);
-        })
-    } catch(err){
-        res.status(500).send(err);
-    }
-});
+// //Search Patents from AvacaPharma
+// router.get('/avacapatents', async (req, res) => {
+//     try {
+//             AvacaPatents.find({}, (err, result) => {
+//             res.status(200).send(result);
+//         })
+//     } catch(err){
+//         res.status(500).send(err);
+//     }
+// });
 
 //Search for send us email
 router.get('/contact', (req,res) => {
