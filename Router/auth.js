@@ -61,7 +61,8 @@ router.get('/patents/:search', (req, res) => {
     patents.find(
         {$or: [
             {wno: {$regex: search, $options: '$i'}},
-            {therapeutic_area: {$regex: search, $options: '$i'}}
+            {therapeutic_area: {$regex: search, $options: '$i'}},
+            {diseases: {$regex: search, $options: '$i'}}
         ]}
     )
     .then((result) => {
