@@ -22,6 +22,6 @@ const middleware = (req,res,next) => {
 }
 
 app.listen(3003, () => {
-    console.log(`Server is running at 3003`);
-    console.log(`http://localhost:3003`, `http://13.233.51.172/`);
+    console.log(`Server is running at 3003 and also in AWS`);
+    console.log(`http://localhost:3003`, `http://13.232.172.223:3003/`);
 })
