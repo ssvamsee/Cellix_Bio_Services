@@ -8,7 +8,7 @@ const cbuspatents = require('../models/CBUSPatentsSchema');
 // const AvacaPatents = require('../Models/AvacaPatentSchema');
 
 router.get('/', (req, res) =>{
-    res.send(`Hello from the Cellix Bio Services and from AWS EC2 Server`)
+    res.send(`Hello from the Cellix Bio Services`)
 });
 
 // Search for all Patents
