@@ -23,7 +23,10 @@ const patentSchema = new mongoose.Schema({
     },
     wno: {
         type: String
+    },
+    pct: {
+        type: String
     }
 })
-const patents = mongoose.model('patents', patentSchema);
+const patents = mongoose.model('pctpatents', patentSchema);
 module.exports = patents;

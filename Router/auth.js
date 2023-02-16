@@ -58,11 +58,13 @@ router.get('/patents/years/:year', (req, res) => {
 //Search for Both Wno and therapeutic area
 router.get('/patents/:search', (req, res) => {
     const search = req.params.search;
+    // console.log(search);
     patents.find(
         {$or: [
             {wno: {$regex: search, $options: '$i'}},
             {therapeutic_area: {$regex: search, $options: '$i'}},
-            {diseases: {$regex: search, $options: '$i'}}
+            {diseases: {$regex: search, $options: '$i'}},
+            {pct: {$regex: search, $options: '$i'}}
         ]}
     )
     .then((result) => {
