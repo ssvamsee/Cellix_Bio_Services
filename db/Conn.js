@@ -9,4 +9,4 @@ mongoose.connect(DB, {
     useUnifiedTopology: true,
 }).then(() => {
     console.log('DB is Successfully Connected');
-}).catch((err) => console.log('No Connection'))
+}).catch((err) => console.log('No Connection'));
