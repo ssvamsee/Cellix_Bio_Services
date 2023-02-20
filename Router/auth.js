@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 const patents = require('../models/patentSchema');
 const User = require('../models/userSchema');
 const user = require('../models/userSchema');
 const uspatents = require('../models/USPatentsSchema');
 const cbuspatents = require('../models/CBUSPatentsSchema');
-// const AvacaPatents = require('../Models/AvacaPatentSchema');
 
 router.get('/', (req, res) =>{
     res.send(`Hello from the Cellix Bio Services`)
@@ -33,79 +33,68 @@ router.get('/patents/wipo/:wno', (req, res) => {
     });
 });
 
-// Search for Therapeutic Area
-router.get('/patents/therapeutic_area/:ta', (req, res) => {
-    const ta = req.params.ta;
-    patents.find({therapeutic_area: ta})
-    .then((result) => {
-        res.status(200).send(result);
-    }).catch((err) => {
-        res.status(500).send(err);
-    });
+//Yearly Patents in sorted order
+router.get('/patents/years/:year', async(req, res) => {
+    try{
+        const year = req.params.year;
+        const yearsPatents = await patents.find({ year: year }).exec();
+        const yearsSortPatents = yearsPatents.sort((a,b) => moment(b.publication_date, 'DD.MM.YYYY').diff(moment(a.publication_date, 'DD.MM.YYYY')));
+        res.status(200).send(yearsSortPatents);
+    } catch (err) {
+        res.status(500).json({
+            error: err,
+            message: "Failed to get the Patents"
+        })
+    }
 });
 
-//Search for Year
-router.get('/patents/years/:year', (req, res) => {
-    const year = req.params.year;
-    patents.find({ year: year})
-    .then((result) => {
-        res.status(200).send(result);
-    }).catch((err) => {
-        res.status(500).send(err);
-    });
+//Search Bar in Patents
+router.get('/patents/:search', async(req, res) => {
+    try{
+        const search = req.params.search;
+        const patentsData = await patents.find(
+            {$or: [
+                {wno: {$regex: search, $options: '$i'}},
+                {therapeutic_area: {$regex: search, $options: '$i'}},
+                {diseases: {$regex: search, $options: '$i'}},
+                {pct: {$regex: search, $options: '$i'}}
+            ]}
+        ).exec();
+        const PatentsSortData = patentsData.sort((a,b) => moment(b.publication_date, 'DD.MM.YYYY').diff(moment(a.publication_date, 'DD.MM.YYYY')));
+        res.status(200).send(PatentsSortData);
+    } catch (err) {
+        res.status(500).json({
+            error: err,
+            message: "Failed to get the Patents"
+        })
+    }
 });
-
-//Search for Both Wno and therapeutic area
-router.get('/patents/:search', (req, res) => {
-    const search = req.params.search;
-    // console.log(search);
-    patents.find(
-        {$or: [
-            {wno: {$regex: search, $options: '$i'}},
-            {therapeutic_area: {$regex: search, $options: '$i'}},
-            {diseases: {$regex: search, $options: '$i'}},
-            {pct: {$regex: search, $options: '$i'}}
-        ]}
-    )
-    .then((result) => {
-        res.status(200).send(result);
-    }).catch((err) => {
-        res.status(500).send(err);
-    })
-})
 
 // Send Data for Inventor
 router.get('/uspatents', async(req, res) => {
-    try {
-            uspatents.find({}, (err, result) => {
-            res.status(200).send(result);
+    try{
+        const uspatentsort = await uspatents.find().sort({ publication_date: -1 }).exec();
+        res.status(201).send(uspatentsort);
+    } catch (err) {
+        res.status(500).json({
+            error: err,
+            message: "US Patent Failed to Load"
         })
-    } catch(err){
-             res.status(500).send(err);
     }
 });
 
 // Send Data for IP
 router.get('/cbuspatents', async(req, res) => {
-    try {
-        cbuspatents.find({}, (err, result) => {
-        res.status(200).send(result);
-    })
-} catch(err){
-    res.status(500).send(err);
-}
+    try{
+        const cbuspatentsort = await cbuspatents.find().sort({ publication_date: -1 }).exec();
+        res.status(201).send(cbuspatentsort);
+    } catch (err) {
+        res.status(500).json({
+            error: err,
+            message: "US Patent Failed to Load"
+        })
+    }
 });
-
-// //Search Patents from AvacaPharma
-// router.get('/avacapatents', async (req, res) => {
-//     try {
-//             AvacaPatents.find({}, (err, result) => {
-//             res.status(200).send(result);
-//         })
-//     } catch(err){
-//         res.status(500).send(err);
-//     }
-// });
 
 //Search for send us email
 router.get('/contact', (req,res) => {

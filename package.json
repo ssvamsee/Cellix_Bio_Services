@@ -15,7 +15,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^6.7.5",
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^4.0.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.7.5"
   }
 }
