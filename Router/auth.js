@@ -44,7 +44,7 @@ router.get('/patents/years/:year', async(req, res) => {
         res.status(500).json({
             error: err,
             message: "Failed to get the Patents"
-        })
+        });
     }
 });
 
@@ -66,7 +66,7 @@ router.get('/patents/:search', async(req, res) => {
         res.status(500).json({
             error: err,
             message: "Failed to get the Patents"
-        })
+        });
     }
 });
 
@@ -79,7 +79,7 @@ router.get('/uspatents', async(req, res) => {
         res.status(500).json({
             error: err,
             message: "US Patent Failed to Load"
-        })
+        });
     }
 });
 
@@ -92,7 +92,54 @@ router.get('/cbuspatents', async(req, res) => {
         res.status(500).json({
             error: err,
             message: "US Patent Failed to Load"
-        })
+        });
+    }
+});
+
+//Get the Years Count upto 2009
+router.get('/allyearcount', async(req, res) => {
+    try{
+        const patentsByYear = await patents.aggregate([
+            { $sort: { year: -1 } },
+            { $group: { _id: '$year', count: { $sum: 1 } } }
+        ]);
+        const patentsCount = patentsByYear.map((doc) => {
+            return {
+                year: doc._id,
+                count: doc.count
+            }
+        });
+        patentsCount.sort((a, b) => b.year - a.year);
+        res.status(200).json(patentsCount);
+    } catch (err) {
+        res.status(500).json({
+            error: err,
+            message: "Failed to get the data"
+        });
+    }
+});
+
+//Get the Years Count upto 2014
+router.get('/yearcount', async(req, res) => {
+    try{
+        const patentsByYear = await patents.aggregate([
+            { $sort: { year: -1 } },
+            { $group: { _id: '$year', count: { $sum: 1 } } }
+        ]);
+        const patentsCount = patentsByYear.map((doc) => {
+            return {
+                year: doc._id,
+                count: doc.count
+            }
+        });
+        patentsCount.sort((a, b) => b.year - a.year);
+        const filteredPatentsCount = patentsCount.filter(patent => Number(patent.year) >= 2014);
+        res.status(200).json(filteredPatentsCount);
+    } catch (err) {
+        res.status(500).json({
+            error: err,
+            message: "Failed to get the data"
+        });
     }
 });
 
