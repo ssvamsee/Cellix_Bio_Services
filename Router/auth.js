@@ -50,22 +50,23 @@ router.get('/patents/years/:year', async(req, res) => {
 
 //Search Bar in Patents
 router.get('/patents/:search', async(req, res) => {
-    try{
+    try {
         const search = req.params.search;
-        const patentsData = await patents.find(
-            {$or: [
-                {wno: {$regex: search, $options: '$i'}},
-                {therapeutic_area: {$regex: search, $options: '$i'}},
-                {diseases: {$regex: search, $options: '$i'}},
-                {pct: {$regex: search, $options: '$i'}}
-            ]}
-        ).exec();
-        const PatentsSortData = patentsData.sort((a,b) => moment(b.publication_date, 'DD.MM.YYYY').diff(moment(a.publication_date, 'DD.MM.YYYY')));
+        const patentsData = await patents.find({
+            $or: [
+                { wno: { $regex: new RegExp(search, 'i') } },
+                { therapeutic_area: { $regex: new RegExp(search, 'i') } },
+                { diseases: { $regex: new RegExp(search, 'i') } },
+                { pct: { $regex: new RegExp(search, 'i') } }
+            ]
+        });
+        const PatentsSortData = patentsData.sort((a, b) => moment(b.publication_date, 'DD.MM.YYYY').diff(moment(a.publication_date, 'DD.MM.YYYY')));
         res.status(200).send(PatentsSortData);
     } catch (err) {
+        console.error(err.message);
         res.status(500).json({
             error: err,
-            message: "Failed to get the Patents"
+            message: 'Error getting patents'
         });
     }
 });
