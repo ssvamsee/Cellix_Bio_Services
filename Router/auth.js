@@ -7,6 +7,8 @@ const user = require('../models/userSchema');
 const uspatents = require('../models/USPatentsSchema');
 const cbuspatents = require('../models/CBUSPatentsSchema');
 
+
+// Home Route
 router.get('/', (req, res) =>{
     res.send(`Hello from the Cellix Bio Services`)
 });
